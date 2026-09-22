@@ -16,16 +16,27 @@ exact details and pays before anything irreversible happens.
 
 Every connector repo is public and secret-free — read the code before you trust it.
 
+## Canonical home
+
+The catalog, API gateway, MCP connector stubs, and the Express fulfillment apps live in [muse-platform](https://github.com/Telep-IO/muse-platform).
+
+- Catalog: `muse.telep.io`. Gateway: `api.muse.telep.io` (`/mcp/{slug}` and `/v1/{slug}`).
+- Agent-facing stubs: `connectors/{slug}` in that repo.
+- Express fulfillment for call, domain, fax, ink, and sign: `services/{slug}` in that repo. Those apps are not part of the Vercel build.
+- Live PaperSend mail stays in [paper-send](https://github.com/Telep-IO/paper-send).
+
+This index does not archive the standalone repositories. They remain published until Jon says otherwise.
+
 ## The connectors
 
 | Connector | What it does | Price | Status |
 |---|---|---|---|
 | [paper-send](https://github.com/Telep-IO/paper-send) | PDF → printed & mailed physical letter (US) | $4.99 + $0.25/page | In review — launching after provider authorization |
-| [sign-send](https://github.com/Telep-IO/sign-send) | E-signature envelopes: upload PDF, collect signatures | $2.99 / envelope | Scaffold — provider integration pending |
-| [fax-send](https://github.com/Telep-IO/fax-send) | Send faxes from a PDF, with optional cover page | $0.99 / page | Scaffold — provider integration pending |
-| [call-send](https://github.com/Telep-IO/call-send) | Agent-drafted phone calls with a human-approved verbatim script | $0.99 / call | Scaffold — provider integration pending |
-| [ink-send](https://github.com/Telep-IO/ink-send) | Robot-handwritten letters & cards, mailed for you | $3.99 / letter | Scaffold — provider integration pending |
-| [domain-send](https://github.com/Telep-IO/domain-send) | Register a domain name (WHOIS privacy included) | $14.99 / yr (.com) | Scaffold — provider integration pending |
+| [sign-send](https://github.com/Telep-IO/muse-platform/tree/main/services/sign-send) | E-signature envelopes: upload PDF, collect signatures | $2.99 / envelope | Scaffold — provider integration pending |
+| [fax-send](https://github.com/Telep-IO/muse-platform/tree/main/services/fax-send) | Send faxes from a PDF, with optional cover page | $0.99 / page | Scaffold — provider integration pending |
+| [call-send](https://github.com/Telep-IO/muse-platform/tree/main/services/call-send) | Agent-drafted phone calls with a human-approved verbatim script | $0.99 / call | Scaffold — provider integration pending |
+| [ink-send](https://github.com/Telep-IO/muse-platform/tree/main/services/ink-send) | Robot-handwritten letters & cards, mailed for you | $3.99 / letter | Scaffold — provider integration pending |
+| [domain-send](https://github.com/Telep-IO/muse-platform/tree/main/services/domain-send) | Register a domain name (WHOIS privacy included) | $14.99 / yr (.com) | Scaffold — provider integration pending |
 
 ## Trust & safety design (shared by all)
 
@@ -36,7 +47,9 @@ Every connector repo is public and secret-free — read the code before you trus
 - Provider calls use idempotency keys; failures queue refunds.
 - Statuses are honest: drafts, checkouts, and queue entries are never described as done.
 
-## Repo layout (each connector)
+## Repo layout (fulfillment apps)
+
+The Express apps now live under `services/{slug}` in [muse-platform](https://github.com/Telep-IO/muse-platform). A typical app still looks like:
 
 - `src/` — API server (Node.js)
 - `public/` — human review page
